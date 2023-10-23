@@ -1,7 +1,4 @@
 # PythonForFinanceClass
-
-Lecture 2 :
-
 ticker = "AAPL"
 opening_price = 144.7
 closing_price = 145.2
@@ -20,10 +17,10 @@ stocks.append("HSBC")
 print(stocks)
 
 stock_details = {
-"ticker": "AAPL",
-"opening_price": 144.7,
-"closing_price": 145.2,
-"volume": 1500000
+    "ticker": "AAPL",
+    "opening_price": 144.7,
+    "closing_price": 145.2,
+    "volume": 1500000
 }
 print(stock_details)
 
@@ -87,3 +84,99 @@ elif 23 <= pe_ratio <= 27:
     print("Sell the stock.")
 else:
     print("Hold the stock.")
+
+
+class Bond:
+    def __init__(self, par_value, coupon_rate, maturity):
+        self.par_value = par_value
+        self.coupon_rate = coupon_rate
+        self.maturity = maturity
+    def current_yield (self, market_price) :
+        return (self.coupon_rate*self.par_value)/market_price
+ten_year_note = Bond(1000, 0.025, 10)
+yield_on_note = ten_year_note.current_yield(950)
+print(yield_on_note)
+class Stock :
+    def __init__ (self, name, current_price, dividend):
+        self.name = name
+        self.current_price = current_price
+        self.dividend = dividend
+    def yield_dividend (self):
+        return (self.dividend / self.current_price)
+aapl_stock = Stock ("AAPL", 200, 3)
+amzn_stock = Stock ("AMZN", 128, 2)
+print ("Apple Stock yield dividend:",aapl_stock.yield_dividend())
+print ("Amazon Stock yield dividend:",amzn_stock.yield_dividend())
+
+class Portfolio :
+    def __init__ (self):
+        self.instruments = []
+    def add_instrument (self, name, price):
+        instrument = {"name": name , "price": price}
+        self.instruments.append(instrument)
+    def total_value (self) :
+        total_value = 0
+        for instrument in self.instruments:
+            total_value += instrument ["price"]
+        return total_value
+
+portfolioA = Portfolio()
+portfolioA.add_instrument("OAT 10 ans", 1000)
+portfolioA.add_instrument("AAPL", 200)
+portfolioA.add_instrument("AMZN", 128)
+
+portfolio_value = portfolioA.total_value()
+print("Total PortfolioA Value:", portfolio_value)
+
+class CurrencyConverter:
+    def __init__(self):
+        self.rates = {}
+
+    def add_conversion_rate(self, source_currency, target_currency, rate):
+        self.rates[(source_currency, target_currency)] = rate
+
+    def convert(self, amount, source_currency, target_currency):
+        if (source_currency, target_currency) in self.rates:
+            rate = self.rates[(source_currency, target_currency)]
+            converted_amount = amount * rate
+            return converted_amount
+        else:
+            return None
+
+converter = CurrencyConverter()
+converter.add_conversion_rate("EUR", "USD", 1.07)
+converter.add_conversion_rate("EUR", "GBP", 0.87)
+converter.add_conversion_rate("USD", "EUR", 0.94)
+converter.add_conversion_rate("USD", "GBP", 0.82)
+converter.add_conversion_rate("GBP", "EUR", 1.15)
+converter.add_conversion_rate("GBP", "USD", 1.22)
+
+amount_to_convert = 200
+source_currency = "GBP"
+target_currency = "USD"
+converted_amount = converter.convert(amount_to_convert, source_currency, target_currency)
+
+if converted_amount is not None:
+    print(f"{amount_to_convert} {source_currency} is equal to {converted_amount} {target_currency}")
+else:
+    print(f"Conversion rate not available for {source_currency} to {target_currency}.")
+
+import numpy as np
+days = 1000
+mean_daily_return = 0.001
+standard_deviation = 0.02
+initial_price = 100
+
+daily_returns = np.random.normal(mean_daily_return, standard_deviation, days)
+
+stock_prices = [initial_price]
+
+for r in daily_returns:
+    stock_prices.append(stock_prices[-1] * (1 + r))
+
+final_stock_price = stock_prices[-1]
+
+print("First 10 Daily Returns:", daily_returns[:10])
+print("First 10 Days of Stock Prices:", stock_prices[:10])
+print(f"The final stock price after 1000 days is: ${final_stock_price:.2f}")
+
